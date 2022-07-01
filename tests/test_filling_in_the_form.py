@@ -25,7 +25,7 @@ def test_submit_form():
     s('#lastName').type('Kozlova')
     s('#userEmail').type('kozlova@gmail.com')
     s('[for=gender-radio-2]').click()
-    s('#userNumber').type('8911911911')gi
+    s('#userNumber').type('8911911911')
 
     s('#dateOfBirthInput').click()
     s('[value="1994"]').click()
