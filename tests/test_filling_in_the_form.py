@@ -2,6 +2,8 @@ from selene import have, command
 from selene.support.shared import browser
 from selene.support.shared.jquery_style import s, ss
 
+from pathlib import Path
+
 
 def given_opened_text_box():
     browser.open('/automation-practice-form').driver.maximize_window()
@@ -13,14 +15,19 @@ def given_opened_text_box():
         .perform(command.js.remove)
     )
 
-#    browser.execute_script("$('body').css('zoom', 0.5);") позволяет увидеть кнопку submit но рушит код
+
+def get_resource_path(resources_filename):
+    return str(
+        Path(__file__)
+        .parent
+        .joinpath(f'resources/{resources_filename}')
+    )
 
 
 def test_submit_form():
     given_opened_text_box()
 
-
-# Filling in form
+    # Filling the form
     s('#firstName').type('Anastasia')
     s('#lastName').type('Kozlova')
     s('#userEmail').type('kozlova@gmail.com')
@@ -36,15 +43,16 @@ def test_submit_form():
     s('#subjectsInput').type('Maths').press_enter()
 
     s('[for="hobbies-checkbox-3"]').click()
-    s('#uploadPicture').type('/Users/anastasiakozlova/PycharmProjects/qaguru.python.5/tests/girl.png')
+
+    s('#uploadPicture').send_keys(get_resource_path('girl.png'))
+
     s('#currentAddress').type('Podgorica')
     s('#react-select-3-input').type('Rajasthan').press_enter()
     s('#react-select-4-input').type('Jaipur').press_enter().press_tab()
 
     s('#submit').perform(command.js.click)
 
-
-# Check
+    # Check
     browser.all("tbody tr").should(have.texts(
         'Student Name Anastasia Kozlova',
         'Student Email kozlova@gmail.com',
